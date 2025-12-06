@@ -1,6 +1,6 @@
-<h1>Dhimas Wildan Nur Zakariya </h1><br>
-<h2>H1D023050</h2>h2> <br>
-<h2>Shift H ke Shift C</h2> <br>
+<h2>Dhimas Wildan Nur Zakariya </h2><br>
+<h3>H1D023050</h3> <br>
+<h3>Shift H ke Shift C</h3> <br>
 
 Tugas 1 - Prak. Pemrograman Mobile - Pertemuan 2
 
