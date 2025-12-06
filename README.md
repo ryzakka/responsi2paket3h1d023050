@@ -1,33 +1,107 @@
 <h2>Dhimas Wildan Nur Zakariya - H1D023050</h2>
-<h3>Responsi 2 Praktikum Pem.Mobile - Shift H ke Shift C</h3> <br>
+<h3>Responsi 2 Praktikum Pem.Mobile - Shift H ke Shift C</h3>
 
-![](cuplikanlayar/ss1.gif)
+<img src="cuplikanlayar/ss1.gif">
 
-<br><br>
 <h3>Spesifikasi API</h3>
+
 <h4>Kredensial Koneksi</h4>
-Menggunakan project URL ```https://jaczwexgttsaf*******.supabase.co``` dan token API kunci anonim ```eyJhbGciOiJI...```
+<p>
+Project URL:<br>
+<pre><code>https://jaczwexgttsaf*******.supabase.co</code></pre>
+
+Anon Key:<br>
+<pre><code>eyJhbGciOiJI...</code></pre>
+</p>
 
 <h3>Basis Data</h3>
+
 <b>.from('buku'):</b>
-1. ```select()```: Mengambil daftar semua buku
-2. ```insert()```: Menambahkan buku baru
-3. ```update()```: mengubah data buku yang ada
-4. ```delete()```: Menghapus bukunya
+<ol>
+  <li><pre><code>select()</code></pre> Mengambil daftar semua buku</li>
+  <li><pre><code>insert()</code></pre> Menambahkan buku baru</li>
+  <li><pre><code>update()</code></pre> Mengubah data buku yang ada</li>
+  <li><pre><code>delete()</code></pre> Menghapus buku berdasarkan id</li>
+</ol>
 
 <b>.from('member'):</b>
-1. ```select()```: Mengambil data profil pengguna yang sedang login
+<ol>
+  <li><pre><code>select()</code></pre> Mengambil data profil pengguna yang sedang login</li>
+</ol>
 
 <h3>Struktur Tabel</h3>
-<p>Untuk tabel buku, tabel ini dirancang sebagai katalog lengkap inventaris. Kolom id bertipe bigint yang berfungsi sebagai Primary Key unik dan nilainya akan dibuat secara otomatis untuk setiap buku baru. Kolom created_at mencatat waktu pembuatan data dengan tipe timestamp with time zone dan secara otomatis diisi dengan waktu saat itu. Informasi inti buku disimpan dalam kolom-kolom seperti judul (tipe text), serta penulis dan penerbit (keduanya varchar). Untuk data numerik, terdapat kolom harga dan volume (keduanya numeric), serta jumlah (tipe integer) untuk melacak stok. Terakhir, ada kolom tanggal_masuk bertipe date untuk mencatat kapan buku tersebut ditambahkan.Selanjutnya, tabel member berfungsi sebagai tabel profil publik. Kolom id di sini sangat krusial; tipenya adalah uuid dan ia berperan ganda sebagai Primary Key sekaligus Foreign Key yang merujuk langsung ke kolom id di tabel auth.users. Pengaturan ini menciptakan hubungan satu-ke-satu yang kuat dan memastikan integritas data. Jika seorang pengguna dihapus dari sistem autentikasi, datanya di tabel member akan ikut terhapus secara otomatis (ON DELETE CASCADE). Tabel ini juga memiliki kolom full_name dan email yang keduanya bertipe text untuk menyimpan nama lengkap dan alamat email pengguna.</p>
+
+<p><b>Tabel buku</b> berfungsi sebagai katalog inventaris lengkap.  
+Kolom <i>id</i> bertipe bigint sebagai Primary Key (auto increment).  
+Kolom <i>created_at</i> bertipe timestamp with time zone.  
+Kolom utama: <i>judul</i> (text), <i>penulis</i> (varchar), <i>penerbit</i> (varchar).  
+Kolom numerik: <i>harga</i> dan <i>volume</i> (numeric).  
+Kolom <i>jumlah</i> (integer) dan <i>tanggal_masuk</i> (date).</p>
+
+<p><b>Tabel member</b> menyimpan profil publik pengguna.  
+Kolom <i>id</i> bertipe uuid dan menjadi Primary Key sekaligus Foreign Key ke auth.users.id (ONE-TO-ONE, ON DELETE CASCADE).  
+Kolom lain: <i>full_name</i> (text) dan <i>email</i> (text).</p>
 
 <h3>Fungsi-fungsi</h3>
-<p>_redirect(): Fungsi ini adalah inti dari halaman splash. Tujuannya adalah memeriksa status login pengguna. Ia akan mengecek apakah ada sesi aktif di Supabase (supabase.auth.currentSession). Jika ada, pengguna akan langsung diarahkan ke HomePage. Jika tidak ada sesi (pengguna belum login), pengguna akan diarahkan ke LoginPage. Proses ini terjadi sangat cepat setelah halaman dimuat. <br>
-_signUp(): Fungsi ini dipanggil saat pengguna menekan tombol "DAFTAR". Ia akan memvalidasi input dari form, lalu mengirimkan email, password, dan nama lengkap (full_name sebagai metadata) ke Supabase untuk membuat akun baru. Jika berhasil, ia akan menampilkan pesan sukses dan mengembalikan pengguna ke halaman sebelumnya (halaman login). <br>
-_signIn(): Fungsi ini dieksekusi saat tombol "LOGIN" ditekan. Fungsinya adalah mengambil email dan password dari form, lalu mengirimkannya ke Supabase untuk diverifikasi. Jika kredensial benar, pengguna akan berhasil login dan diarahkan ke HomePage, serta semua halaman sebelumnya akan dihapus dari tumpukan navigasi agar pengguna tidak bisa kembali ke halaman login. <br>
-_loadUserData(): Fungsi ini dipanggil saat halaman dimuat untuk mengambil nama lengkap (full_name) dari pengguna yang sedang login dari tabel member dan menampilkannya di AppBar sebagai sapaan selamat datang. <br>
-_loadBooks(): Memuat ulang data buku dari Supabase. Fungsi ini dipanggil saat halaman pertama kali dibuka, setelah buku baru ditambahkan, atau saat pengguna melakukan "pull-to-refresh". <br>
-_getBooks(): Fungsi inti yang melakukan permintaan select ke tabel buku di Supabase untuk mengambil semua data inventaris buku, mengurutkannya berdasarkan tanggal pembuatan terbaru. <br>
-_deleteBook(id): Mengirim permintaan delete ke Supabase untuk menghapus buku berdasarkan id-nya. <br>
-_filterBooks(): Fungsi ini berjalan setiap kali pengguna mengetik di kolom pencarian. Ia akan menyaring daftar buku yang ditampilkan berdasarkan judul, penulis, atau penerbit yang cocok dengan teks pencarian. <br>
-_signOut() (di dalam IconButton): Memanggil supabase.auth.signOut() untuk mengeluarkan pengguna dan mengarahkannya kembali ke halaman splash, yang kemudian akan membawanya ke halaman login. </p>
+
+<p>
+<b>_redirect():</b><br>
+Memeriksa sesi login melalui:
+<pre><code>supabase.auth.currentSession</code></pre>
+Jika ada → ke HomePage, jika tidak → ke LoginPage.
+</p>
+
+<p>
+<b>_signUp():</b><br>
+Dipanggil saat tombol DAFTAR.  
+Mengirim email, password, dan metadata full_name ke Supabase.  
+Jika berhasil → kembali ke halaman login.
+</p>
+
+<p>
+<b>_signIn():</b><br>
+Mengambil email dan password, lalu memverifikasi ke Supabase.  
+Jika sukses → pindah ke HomePage dan menghapus riwayat halaman sebelumnya.
+</p>
+
+<p>
+<b>_loadUserData():</b><br>
+Mengambil kolom <i>full_name</i> dari tabel member dan menampilkannya di AppBar.
+</p>
+
+<p>
+<b>_loadBooks():</b><br>
+Memuat ulang data buku saat halaman dibuka, setelah penambahan buku, atau saat pull-to-refresh.
+</p>
+
+<p>
+<b>_getBooks():</b><br>
+Query pengambilan buku:
+<pre><code>
+.from('buku')
+  .select()
+  .order('created_at', { ascending: false })
+</code></pre>
+</p>
+
+<p>
+<b>_deleteBook(id):</b><br>
+Menghapus buku berdasarkan id:
+<pre><code>
+.from('buku')
+  .delete()
+  .eq('id', id)
+</code></pre>
+</p>
+
+<p>
+<b>_filterBooks():</b><br>
+Menjalankan pencarian berdasarkan judul, penulis, atau penerbit.
+</p>
+
+<p>
+<b>_signOut():</b><br>
+Logout dengan:
+<pre><code>supabase.auth.signOut()</code></pre>
+Mengembalikan pengguna ke halaman splash.
+</p>
